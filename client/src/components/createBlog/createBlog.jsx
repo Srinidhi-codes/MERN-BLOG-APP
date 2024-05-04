@@ -37,12 +37,14 @@ const CreateBlog = () => {
         let typingTimer;
         const handleTypingStopped = () => {
             if (isChanged) {
-                handleCreateBlog();
+                setIsSaved(false); // Changes made, not saved yet
+                clearTimeout(typingTimer); // Clear previous timer
+                typingTimer = setTimeout(handleCreateBlog, 3000); // Start new timer
             }
         };
         typingTimer = setTimeout(handleTypingStopped, 3000);
         return () => clearTimeout(typingTimer);
-    }, [title, desc, category, img])
+    }, [title, desc, category, img, isChanged]);
 
     const handleCreateBlog = async () => {
         try {
@@ -53,7 +55,7 @@ const CreateBlog = () => {
                 formData.append("filename", filename)
                 formData.append("image", img)
 
-                await fetch(`http://localhost:8080/upload`, {
+                await fetch(`https://mern-blog-app-8l09.onrender.com/upload`, {
                     method: "POST",
                     body: formData
                 })

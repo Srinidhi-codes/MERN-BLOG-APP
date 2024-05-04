@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080/api/v1'
+const BASE_URL = 'https://mern-blog-app-8l09.onrender.com/api/v1'
 export const request = async (url, method, headers = {}, body = {}, isNotStringified = false) => {
     let res
     let data
