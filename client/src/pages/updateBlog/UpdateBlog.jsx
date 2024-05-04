@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { request } from '../../utils/fetchApi';
 import { FaCloudArrowUp } from "react-icons/fa6";
 import { IoIosCloudDone } from "react-icons/io";
+import toast from 'react-hot-toast';
 
 
 function UpdateBlog() {
@@ -59,11 +60,12 @@ function UpdateBlog() {
     const handleUpdateBlog = async () => {
         try {
             const options = { 'Authorization': `${token}`, 'Content-Type': 'application/json' };
-            await request(`/blog/${id}`, 'PUT', options, { title, desc, category });
+            const updated = await request(`/blog/${id}`, 'PUT', options, { title, desc, category });
+            toast.success(updated.message)
             setIsChanged(false);
             setIsSaved(true);
         } catch (error) {
-            console.log(error);
+            toast.error(error);
         }
     };
 

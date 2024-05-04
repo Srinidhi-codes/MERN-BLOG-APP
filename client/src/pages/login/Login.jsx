@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { request } from '../../utils/fetchApi';
 import { login } from '../../redux/authSlice'
 import { useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
 
 function Login() {
     const initForm = { email: '', password: '' }
@@ -16,7 +17,7 @@ function Login() {
         try {
             const options = { 'Content-Type': 'application/json' }
             const data = await request('/auth/login', "POST", options, formData)
-            console.log(data)
+            toast.success(data.message)
             dispatch(login(data))
             navigate('/')
         } catch (error) {

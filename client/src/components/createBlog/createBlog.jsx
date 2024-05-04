@@ -8,6 +8,7 @@ import { request } from '../../utils/fetchApi'
 import Header from '../header/Header'
 import { FaCloudArrowUp } from 'react-icons/fa6'
 import { IoIosCloudDone } from 'react-icons/io'
+import toast from 'react-hot-toast'
 
 const CreateBlog = () => {
     const [title, setTitle] = useState("")
@@ -37,9 +38,9 @@ const CreateBlog = () => {
         let typingTimer;
         const handleTypingStopped = () => {
             if (isChanged) {
-                setIsSaved(false); // Changes made, not saved yet
-                clearTimeout(typingTimer); // Clear previous timer
-                typingTimer = setTimeout(handleCreateBlog, 3000); // Start new timer
+                setIsSaved(false);
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(handleCreateBlog, 3000);
             }
         };
         typingTimer = setTimeout(handleTypingStopped, 3000);
@@ -73,10 +74,11 @@ const CreateBlog = () => {
                 photo: filename
             }
             const data = await request('/blog', "POST", options, body)
+            toast.success(data.message)
             setIsChanged(false);
             setIsSaved(true);
         } catch (error) {
-            console.error(error)
+            toast.error(error)
         }
     }
 

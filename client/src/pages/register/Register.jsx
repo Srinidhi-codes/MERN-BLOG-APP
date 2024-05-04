@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { request } from '../../utils/fetchApi';
 import { register } from '../../redux/authSlice'
 import { useDispatch } from 'react-redux';
+import toast from 'react-hot-toast';
 
 function Register() {
     const initForm = { name: '', email: '', password: '' }
@@ -17,9 +18,10 @@ function Register() {
             const options = { 'Content-Type': 'application/json' }
             const data = await request('/auth/register', "POST", options, formData)
             dispatch(register(data))
+            toast.success(data.message)
             navigate('/')
         } catch (error) {
-            console.log(error)
+            toast.error(error)
         }
     }
     const handleFormChange = (field, val) => {

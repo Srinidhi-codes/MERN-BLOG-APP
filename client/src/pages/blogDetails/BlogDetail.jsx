@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { request } from '../../utils/fetchApi'
 import Header from '../../components/header/Header'
 import { AiFillEdit, AiFillDelete, AiFillLike, AiOutlineLike, AiOutlineArrowLeft } from 'react-icons/ai'
+import toast from 'react-hot-toast'
 
 function BlogDetail() {
     const [blogDetails, setBlogDetails] = useState({
@@ -36,15 +37,16 @@ function BlogDetail() {
             const options = {
                 'Authorization': `${token}`
             };
-            await request(`/blog/like/${id}`, 'PUT', options);
+            const liked = await request(`/blog/like/${id}`, 'PUT', options);
             // Update likes count in the blogDetails state
             setBlogDetails((prevBlogDetails) => ({
                 ...prevBlogDetails,
                 likes: isLiked ? prevBlogDetails.likes.filter(userId => userId !== user?._id) : [...prevBlogDetails.likes, user?._id]
             }));
             setIsLiked((prev) => !prev);
+            toast.success(liked.message)
         } catch (error) {
-            console.log('Error liking post:', error);
+            toast.error('Error liking post:', error);
         }
     };
 
@@ -53,13 +55,13 @@ function BlogDetail() {
             const options = {
                 'Authorization': `${token}`
             }
-            await request(`/blog/${id}`, 'DELETE', options)
+            const deleted = await request(`/blog/${id}`, 'DELETE', options)
+            toast.success(deleted.message)
             navigate('/')
         } catch (error) {
-            console.log(error)
+            toast.error(error)
         }
     }
-    console.log(user, 'user')
     return (
         <>
             <Header />

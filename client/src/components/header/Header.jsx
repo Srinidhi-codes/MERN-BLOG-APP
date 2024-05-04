@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import './header.css'
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/authSlice';
+import toast from 'react-hot-toast';
 
 function Header() {
     const [showModal, setShowModal] = useState(false)
@@ -12,6 +13,7 @@ function Header() {
 
     const handleLogout = () => {
         dispatch(logout());
+        toast.success('Logged Out Successfully')
     };
 
     const navLinks = [
